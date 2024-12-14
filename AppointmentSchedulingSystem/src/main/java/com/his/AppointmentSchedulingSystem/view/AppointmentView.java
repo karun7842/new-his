@@ -1,9 +1,12 @@
 package com.his.AppointmentSchedulingSystem.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,20 +17,24 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
+import com.his.AppointmentSchedulingSystem.controller.AppointmentController;
+import com.his.AppointmentSchedulingSystem.model.Doctor;
+
 public class AppointmentView {
     private JFrame frame;
     private JTable appointmentTable;
     private DefaultTableModel tableModel;
     private JButton viewButton, scheduleButton, rescheduleButton, cancelButton, resetButton;
-    private JTextField filterMrdField, filterDoctorField, filterSpecialityField;
+    private JTextField filterMrdField;
+    private JTextField filterDoctorField, filterSpecialityField;
 
     public AppointmentView() {
         frame = new JFrame("Appointment Scheduling System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setLayout(new BorderLayout());
-        //frame.setBackground(Color.decode("#E3F2FD"));
-        
 
         JLabel titleLabel = new JLabel("Appointment Scheduling System", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -39,25 +46,50 @@ public class AppointmentView {
     }
 
     private void setupTable() {
-        String[] columns = { "Patient Name", "MRD ID", "Contact Info", "Doctor Name", "Consultation fee","Department", 
-                             "Speciality", "Appointment Date", "Appointment Time","Status" };
+        String[] columns = { "Patient Name", "MRD ID", "Contact Info", "Doctor Name", "Consultation fee", "Department",
+                             "Speciality", "Appointment Date", "Appointment Time", "Status" };
         tableModel = new DefaultTableModel(columns, 0);
         appointmentTable = new JTable(tableModel);
-//        appointmentTable.setVisible(false);
+        JScrollPane tableScrollPane = new JScrollPane(appointmentTable);
 
-        frame.add(appointmentTable,BorderLayout.CENTER);
-        appointmentTable.setVisible(true);
-
-        
+        frame.add(tableScrollPane, BorderLayout.CENTER);
     }
 
     private void setupFilters() {
-        JPanel filterPanel = new JPanel();
-        filterMrdField = new JTextField(10);
-        filterDoctorField = new JTextField(10);
-        filterSpecialityField = new JTextField(10);
+        JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        filterPanel.add(new JLabel(" MRD ID:"));
+        // MRD ID Field
+        filterMrdField = new JTextField(10);
+        filterMrdField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    applyFilters();
+                }
+            }
+        });
+
+        // Initialize and populate doctor suggestions
+        List<String> doctors = new ArrayList<>();
+        for (Doctor doctor : AppointmentController.loadDoctors()) {
+            if (!doctors.contains(doctor.getName())) {
+                doctors.add(doctor.getName());
+            }
+        }
+        filterDoctorField = new JTextField(10);
+        AutoCompleteDecorator.decorate(filterDoctorField, doctors, false);
+
+        // Initialize and populate speciality suggestions
+        List<String> specialities = new ArrayList<>();
+        for (Doctor doctor : AppointmentController.loadDoctors()) {
+            if (!specialities.contains(doctor.getSpecialization())) {
+                specialities.add(doctor.getSpecialization());
+            }
+        }
+        filterSpecialityField = new JTextField(10);
+        AutoCompleteDecorator.decorate(filterSpecialityField, specialities, false);
+
+        filterPanel.add(new JLabel("MRD ID:"));
         filterPanel.add(filterMrdField);
         filterPanel.add(new JLabel("Doctor:"));
         filterPanel.add(filterDoctorField);
@@ -65,9 +97,7 @@ public class AppointmentView {
         filterPanel.add(filterSpecialityField);
 
         frame.add(filterPanel, BorderLayout.NORTH);
-    	
-         }
-    
+    }
 
     private void setupButtons() {
         JPanel buttonPanel = new JPanel();
@@ -128,6 +158,8 @@ public class AppointmentView {
     public JTextField getFilterSpecialityField() {
         return filterSpecialityField;
     }
-    
 
+    private void applyFilters() {
+        // Placeholder for filter logic, actual filtering done in AppointmentController
+    }
 }
