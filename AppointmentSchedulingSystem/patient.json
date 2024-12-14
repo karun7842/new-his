@@ -1,0 +1,55 @@
+[ {
+  "name" : "Anjana",
+  "dob" : [ 2002, 12, 7 ],
+  "age" : 22,
+  "address" : "TVM",
+  "email" : "anjana@gmail.com",
+  "bloodGroup" : "O+",
+  "phoneNumber" : 9087654321,
+  "tokenNumber" : 1
+}, {
+  "name" : "Anjali",
+  "dob" : [ 2017, 8, 13 ],
+  "age" : 7,
+  "address" : "kollam",
+  "email" : "anjali@gmail.com",
+  "bloodGroup" : "A+",
+  "phoneNumber" : 7890563412,
+  "tokenNumber" : 2
+}, {
+  "name" : "Johns RAju",
+  "dob" : [ 2024, 12, 1 ],
+  "age" : 0,
+  "address" : "KTM",
+  "email" : "Johns@gmail",
+  "bloodGroup" : "A+",
+  "phoneNumber" : 9087654321,
+  "tokenNumber" : 3
+}, {
+  "name" : "Karun",
+  "dob" : [ 2004, 12, 22 ],
+  "age" : 20,
+  "address" : "trs",
+  "email" : "karun@gmail.com",
+  "bloodGroup" : "A+",
+  "phoneNumber" : 9087654321,
+  "tokenNumber" : 4
+}, {
+  "name" : "Sneha",
+  "dob" : [ 2002, 12, 13 ],
+  "age" : 22,
+  "address" : "Kottayam",
+  "email" : "sneha@gmail.com",
+  "bloodGroup" : "A+",
+  "phoneNumber" : 8906745231,
+  "tokenNumber" : 5
+}, {
+  "name" : "Hari",
+  "dob" : [ 2002, 8, 20 ],
+  "age" : 22,
+  "address" : "Malappuram",
+  "email" : "hari@gmail.com",
+  "bloodGroup" : "AB-",
+  "phoneNumber" : 8906745231,
+  "tokenNumber" : 6
+} ]
