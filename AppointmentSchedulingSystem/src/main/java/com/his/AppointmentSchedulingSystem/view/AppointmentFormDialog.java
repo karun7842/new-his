@@ -301,3 +301,16 @@ public class AppointmentFormDialog extends JDialog {
 		return searchButton;
 	}
 }
+
+
+
+////
+mriIdTextField.setPreferredSize(new java.awt.Dimension(200, 25));
+patientNameField.setPreferredSize(new java.awt.Dimension(200, 25));
+patientPhoneField.setPreferredSize(new java.awt.Dimension(200, 25));
+patientEmailField.setPreferredSize(new java.awt.Dimension(200, 25));
+departmentComboBox.setPreferredSize(new java.awt.Dimension(200, 25));
+specializationComboBox.setPreferredSize(new java.awt.Dimension(200, 25));
+doctorNameComboBox.setPreferredSize(new java.awt.Dimension(200, 25));
+appointmentDateChooser.setPreferredSize(new java.awt.Dimension(200, 25));
+appointmentTimeSpinner.setPreferredSize(new java.awt.Dimension(200, 25));
