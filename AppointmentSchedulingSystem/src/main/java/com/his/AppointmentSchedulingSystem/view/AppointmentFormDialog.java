@@ -16,13 +16,14 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
 import com.his.AppointmentSchedulingSystem.controller.AppointmentController;
@@ -58,7 +59,7 @@ public class AppointmentFormDialog extends JDialog {
 		setLocationRelativeTo(null);
 
 		JPanel mainPanel = new JPanel();
-		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 5));
 		mainPanel.setLayout(new BorderLayout(10, 10));
 
 		JPanel formPanel = new JPanel(new GridLayout(12, 2, 10, 10));
@@ -72,9 +73,8 @@ public class AppointmentFormDialog extends JDialog {
 		JPanel mriIdPanel = new JPanel(new BorderLayout());
 		mriIdTextField = new JTextField();
 		mriIdPanel.add(mriIdTextField, BorderLayout.CENTER);
-		searchButton = new JButton(new ImageIcon(
-				new ImageIcon("C:\\Users\\Milind P\\QuestWorkspace\\AppointmentSchedulingSystem\\images\\lens.png")
-						.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH)));
+		searchButton = new JButton(new ImageIcon(new ImageIcon("C:\\Users\\2021617\\Downloads\\image.png\"").getImage()
+				.getScaledInstance(12, 12, Image.SCALE_SMOOTH)));
 		searchButton.setPreferredSize(new java.awt.Dimension(25, 25));
 		searchButton.addActionListener(e -> searchPatient());
 		mriIdPanel.add(searchButton, BorderLayout.EAST);
@@ -96,10 +96,14 @@ public class AppointmentFormDialog extends JDialog {
 		patientEmailField.setEditable(false);
 		formPanel.add(patientEmailField);
 
+		formPanel.add(new JSeparator());
+		formPanel.add(new JLabel());
+
 		// Department, Specialization, and Doctor Fields
 		formPanel.add(new JLabel("Department:"));
 		for (Doctor doctor : doctors) {
 			specializationArray.add(doctor.getDepartment());
+
 		}
 		departmentComboBox = new JComboBox<>(specializationArray.toArray(new String[0]));
 		formPanel.add(departmentComboBox);
@@ -247,42 +251,44 @@ public class AppointmentFormDialog extends JDialog {
 	}
 
 	private void submit() {
-	    try {
-	        String mriId = mriIdTextField.getText();
-	        String patientName = patientNameField.getText();
-	        String patientPhone = patientPhoneField.getText();
-	        String patientEmail = patientEmailField.getText();
-	        String department = (String) departmentComboBox.getSelectedItem();
-	        String specialization = (String) specializationComboBox.getSelectedItem();
-	        String doctorName = (String) doctorNameComboBox.getSelectedItem();
-	        Date appointmentDate = appointmentDateChooser.getDate();
-	        Date appointmentTime = (Date) appointmentTimeSpinner.getValue();
+		try {
+			String mriId = mriIdTextField.getText();
+			String patientName = patientNameField.getText();
+			String patientPhone = patientPhoneField.getText();
+			String patientEmail = patientEmailField.getText();
+			String department = (String) departmentComboBox.getSelectedItem();
+			String specialization = (String) specializationComboBox.getSelectedItem();
+			String doctorName = (String) doctorNameComboBox.getSelectedItem();
+			Date appointmentDate = appointmentDateChooser.getDate();
+			Date appointmentTime = (Date) appointmentTimeSpinner.getValue();
 
-	        // Ensure selectedDoctor is set
-	        selectedDoctor = null;
-	        for (Doctor doctor : doctors) {
-	            if (doctor.getName().equals(doctorName) &&
-	                doctor.getDepartment().equals(department) &&
-	                doctor.getSpecialization().equals(specialization)) {
-	                selectedDoctor = doctor;
-	                break;
-	            }
-	        }
+			// Ensure selectedDoctor is set
+			selectedDoctor = null;
+			for (Doctor doctor : doctors) {
+				if (doctor.getName().equals(doctorName) && doctor.getDepartment().equals(department)
+						&& doctor.getSpecialization().equals(specialization)) {
+					selectedDoctor = doctor;
+					break;
+				}
+			}
 
-	        if (selectedPatient == null || selectedDoctor == null || department.isEmpty() || specialization.isEmpty() || doctorName.isEmpty() || appointmentDate == null || appointmentTime == null) {
-	            JOptionPane.showMessageDialog(this, "Please fill all the required fields", "Error", JOptionPane.ERROR_MESSAGE);
-	            return;
-	        }
+			if (selectedPatient == null || selectedDoctor == null || department.isEmpty() || specialization.isEmpty()
+					|| doctorName.isEmpty() || appointmentDate == null || appointmentTime == null) {
+				JOptionPane.showMessageDialog(this, "Please fill all the required fields", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
-	        LocalDate localDate = appointmentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	        appointment = new Appointment(selectedPatient, selectedDoctor, localDate.format(formatter), new SimpleDateFormat("hh:mm a").format(appointmentTime));
+			LocalDate localDate = appointmentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			appointment = new Appointment(selectedPatient, selectedDoctor, localDate.format(formatter),
+					new SimpleDateFormat("hh:mm a").format(appointmentTime));
 
-	        dispose();
-	    } catch (Exception ex) {
-	        JOptionPane.showMessageDialog(this, "Invalid input: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	    }
+			dispose();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Invalid input: " + ex.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
-
 
 	private void cancel() {
 		appointment = null;
@@ -301,16 +307,3 @@ public class AppointmentFormDialog extends JDialog {
 		return searchButton;
 	}
 }
-
-
-
-////
-mriIdTextField.setPreferredSize(new java.awt.Dimension(200, 25));
-patientNameField.setPreferredSize(new java.awt.Dimension(200, 25));
-patientPhoneField.setPreferredSize(new java.awt.Dimension(200, 25));
-patientEmailField.setPreferredSize(new java.awt.Dimension(200, 25));
-departmentComboBox.setPreferredSize(new java.awt.Dimension(200, 25));
-specializationComboBox.setPreferredSize(new java.awt.Dimension(200, 25));
-doctorNameComboBox.setPreferredSize(new java.awt.Dimension(200, 25));
-appointmentDateChooser.setPreferredSize(new java.awt.Dimension(200, 25));
-appointmentTimeSpinner.setPreferredSize(new java.awt.Dimension(200, 25));
