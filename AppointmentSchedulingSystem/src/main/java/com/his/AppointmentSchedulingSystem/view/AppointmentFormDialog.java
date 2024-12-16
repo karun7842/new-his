@@ -2,15 +2,19 @@ package com.his.AppointmentSchedulingSystem.view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.lang.ModuleLayer.Controller;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -50,11 +54,12 @@ public class AppointmentFormDialog extends JDialog {
 	private Set<String> specializationArray = new HashSet<>();
 	private Set<String> doctorsSet = new HashSet<>();
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+	List<String> timeSlots;
 
 	public AppointmentFormDialog(Appointment appointment) {
 		setTitle("Schedule Appointment");
 		setModal(true);
-		setSize(600, 500);
+		setSize(700, 600);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 
@@ -73,8 +78,8 @@ public class AppointmentFormDialog extends JDialog {
 		JPanel mriIdPanel = new JPanel(new BorderLayout());
 		mriIdTextField = new JTextField();
 		mriIdPanel.add(mriIdTextField, BorderLayout.CENTER);
-		searchButton = new JButton(new ImageIcon(new ImageIcon("C:\\Users\\2021617\\Downloads\\image.png\"").getImage()
-				.getScaledInstance(12, 12, Image.SCALE_SMOOTH)));
+		searchButton = new JButton(new ImageIcon(new ImageIcon("C:\\Users\\2021617\\Downloads\\image2.png").getImage()
+				.getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
 		searchButton.setPreferredSize(new java.awt.Dimension(25, 25));
 		searchButton.addActionListener(e -> searchPatient());
 		mriIdPanel.add(searchButton, BorderLayout.EAST);
@@ -84,6 +89,7 @@ public class AppointmentFormDialog extends JDialog {
 		formPanel.add(new JLabel("Patient Name:"));
 		patientNameField = new JTextField();
 		patientNameField.setEditable(false);
+
 		formPanel.add(patientNameField);
 
 		formPanel.add(new JLabel("Patient Phone:"));
@@ -186,21 +192,55 @@ public class AppointmentFormDialog extends JDialog {
 	}
 
 	private void openScheduleAssistantWindow() {
+
 		JDialog scheduleAssistantDialog = new JDialog(this, "Schedule Assistant", true);
-		scheduleAssistantDialog.setSize(400, 300);
+		scheduleAssistantDialog.setSize(600, 500);
 		scheduleAssistantDialog.setLayout(new BorderLayout());
 		scheduleAssistantDialog.setLocationRelativeTo(this);
 
-		JPanel contentPanel = new JPanel();
-		contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		contentPanel.add(new JLabel("Schedule Assistant functionality goes here."));
-		scheduleAssistantDialog.add(contentPanel, BorderLayout.CENTER);
+		JPanel slotsPanel = new JPanel();
+		slotsPanel.setLayout(new GridLayout(0, 4, 10, 10));
+		slotsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		
+		timeSlots = AppointmentController.addScheduleList(selectedDoctor,
+				appointmentDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).format(formatter));
+		for (String slot : timeSlots) {
+			JButton slotButton = new JButton(slot);
+			slotButton.addActionListener(e -> {
+				appointmentTimeSpinner.setValue(ParseTime(slot));
+				scheduleAssistantDialog.dispose();
+			});
+			slotsPanel.add(slotButton);
+		}
+		scheduleAssistantDialog.add(slotsPanel, BorderLayout.CENTER);
 
-		JButton closeButton = new JButton("Close");
+		JButton closeButton = new JButton("close");
 		closeButton.addActionListener(e -> scheduleAssistantDialog.dispose());
 		scheduleAssistantDialog.add(closeButton, BorderLayout.SOUTH);
-
 		scheduleAssistantDialog.setVisible(true);
+
+	}
+//	private ArrayList<String> generateTimeSlots(){
+//		ArrayList<String>slots=new ArrayList<>();
+//		int startHour=9;
+//		int endHour=17;
+//		int interval=15;
+//		for(int hour=startHour;hour<=endHour;hour++) {
+//			for(int minute=0;minute<60;minute+=interval) {
+//				String time=String.format("%02d:%02d %s",(hour>12?hour-12:hour),minute,(hour>=12?"PM":"AM"));
+//				slots.add(time);
+//			}
+//		}
+//		return slots;
+//	}
+
+	private Date ParseTime(String time) {
+		try {
+			return new SimpleDateFormat("hh:mm a").parse(time);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Date();
+		}
 	}
 
 	private void searchPatient() {
@@ -250,7 +290,7 @@ public class AppointmentFormDialog extends JDialog {
 		}
 	}
 
-	private void submit() {
+	public void submit() {
 		try {
 			String mriId = mriIdTextField.getText();
 			String patientName = patientNameField.getText();
@@ -263,7 +303,6 @@ public class AppointmentFormDialog extends JDialog {
 			Date appointmentTime = (Date) appointmentTimeSpinner.getValue();
 
 			// Ensure selectedDoctor is set
-			selectedDoctor = null;
 			for (Doctor doctor : doctors) {
 				if (doctor.getName().equals(doctorName) && doctor.getDepartment().equals(department)
 						&& doctor.getSpecialization().equals(specialization)) {
@@ -280,9 +319,11 @@ public class AppointmentFormDialog extends JDialog {
 			}
 
 			LocalDate localDate = appointmentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			appointment = new Appointment(selectedPatient, selectedDoctor, localDate.format(formatter),
-					new SimpleDateFormat("hh:mm a").format(appointmentTime));
-
+			String time = new SimpleDateFormat("hh:mm a").format(appointmentTime);
+			appointment = new Appointment(selectedPatient, selectedDoctor, localDate.format(formatter), time);
+			AppointmentController.addScheduleList(selectedDoctor,localDate.format(formatter));
+			AppointmentController.removeScheduleList(selectedDoctor, localDate.format(formatter));
+			AppointmentController.writeDoctorSchedule();
 			dispose();
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(this, "Invalid input: " + ex.getMessage(), "Error",
@@ -306,4 +347,5 @@ public class AppointmentFormDialog extends JDialog {
 	public JButton getSearchButton() {
 		return searchButton;
 	}
+
 }
