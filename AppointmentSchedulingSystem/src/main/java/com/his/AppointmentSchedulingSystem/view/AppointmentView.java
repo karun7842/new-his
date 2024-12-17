@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,27 +21,23 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import com.his.AppointmentSchedulingSystem.controller.AppointmentController;
 import com.his.AppointmentSchedulingSystem.model.Doctor;
 
-public class AppointmentView {
-    private JFrame frame;
+public class AppointmentView extends JPanel {
     private JTable appointmentTable;
     private DefaultTableModel tableModel;
     private JButton viewButton, scheduleButton, rescheduleButton, cancelButton, resetButton;
     private JTextField filterMrdField;
     private JTextField filterDoctorField, filterSpecialityField;
 
-    public AppointmentView() {
-        frame = new JFrame("Appointment Scheduling System");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setLayout(new BorderLayout());
+    public AppointmentView(boolean isReschedule) {
+        setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Appointment Scheduling System", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        frame.add(titleLabel, BorderLayout.NORTH);
+        add(titleLabel, BorderLayout.NORTH);
 
         setupTable();
         setupFilters();
-        setupButtons();
+        setupButtons(isReschedule);
     }
 
     private void setupTable() {
@@ -52,7 +47,7 @@ public class AppointmentView {
         appointmentTable = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(appointmentTable);
 
-        frame.add(tableScrollPane, BorderLayout.CENTER);
+        add(tableScrollPane, BorderLayout.CENTER);
     }
 
     private void setupFilters() {
@@ -96,10 +91,10 @@ public class AppointmentView {
         filterPanel.add(new JLabel("Speciality:"));
         filterPanel.add(filterSpecialityField);
 
-        frame.add(filterPanel, BorderLayout.NORTH);
+        add(filterPanel, BorderLayout.NORTH);
     }
 
-    private void setupButtons() {
+    private void setupButtons(boolean isReschedule) {
         JPanel buttonPanel = new JPanel();
 
         scheduleButton = new JButton("Add appointment");
@@ -107,16 +102,14 @@ public class AppointmentView {
         cancelButton = new JButton("Cancel");
         resetButton = new JButton("Reset");
 
-        buttonPanel.add(scheduleButton);
-        buttonPanel.add(rescheduleButton);
+        if(!isReschedule)
+        	buttonPanel.add(scheduleButton);
+        else
+        	buttonPanel.add(rescheduleButton);
         buttonPanel.add(cancelButton);
         buttonPanel.add(resetButton);
 
-        frame.add(buttonPanel, BorderLayout.SOUTH);
-    }
-
-    public void display() {
-        frame.setVisible(true);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     public JTable getAppointmentTable() {
