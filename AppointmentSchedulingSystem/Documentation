@@ -1,0 +1,278 @@
+1. Overview
+
+Purpose:
+To provide a system where users can create and reschedule appointments efficiently.
+Includes features like filtering appointments, managing appointment details, and scheduling with available time slots.
+
+Scope:
+The system allows users to manage appointments by creating and rescheduling them. It includes patient details, appointment filtering options, and seamless interaction with available time slots through a schedule assistant.
+
+
+
+---
+
+2. Features
+
+Main Features
+
+1. Create Appointment
+
+Displays a table of appointment details.
+
+Includes filters (MRD number, Doctor, Speciality) for searching specific appointments.
+
+Enables users to fill a form to add a new appointment.
+
+
+
+2. Reschedule Appointment
+
+Displays a table of existing appointments.
+
+Allows users to select an existing appointment and reschedule it.
+
+
+
+3. Schedule Assistant
+
+Opens a window with available time slots for users to choose from while scheduling appointments.
+
+
+
+
+Menu Options
+
+Home: Redirects to the welcome page.
+
+Registration: Handles user or patient registration.
+
+Appointments: Manages the appointment system with sub-options for creating and rescheduling appointments.
+
+Browser: Provides browsing functionality (e.g., medical records).
+
+Consultation: Displays consultation details for the selected appointments.
+
+
+
+---
+
+3. System Workflow
+
+Flow of Create Appointment
+
+1. Step 1:
+The user clicks on "Create Appointment" in the Appointments menu.
+
+
+2. Step 2:
+The system displays the appointment table with filters and action buttons.
+
+
+3. Step 3:
+Clicking the "Add Appointment" button opens a form for appointment details.
+
+
+4. Step 4:
+Users fill the form fields:
+
+MRD Number, Patient Name, Phone, Email, Department, Specialization, Doctor Name, Appointment Date, Appointment Time.
+
+
+
+5. Step 5:
+Users click on the "Schedule Assistant" button to see available time slots.
+
+
+6. Step 6:
+After selecting a time slot, users can submit the form to finalize the appointment.
+
+
+
+Flow of Reschedule Appointment
+
+1. Step 1:
+The user clicks on "Reschedule Appointment" in the Appointments menu.
+
+
+2. Step 2:
+The system displays the appointment table with filters and action buttons.
+
+
+3. Step 3:
+Users select a previous appointment and click the "Reschedule" button.
+
+
+4. Step 4:
+The system follows the same workflow as "Create Appointment" to reschedule.
+
+
+
+
+---
+
+4. User Interface Design
+
+Welcome Page
+
+Description:
+Displays the main menu bar with the following options:
+
+Home
+
+Registration
+
+Appointments (with submenus)
+
+Browser
+
+Consultation
+
+
+
+Create Appointment Page
+
+Table Columns:
+
+Patient Name
+
+MRD Number
+
+Contact Info
+
+Doctor Name
+
+Consultation Fee
+
+Department
+
+Speciality
+
+Appointment Date
+
+Appointment Time
+
+Status
+
+
+Filters:
+
+MRD Number
+
+Doctor
+
+Speciality
+
+
+Buttons:
+
+Add Appointment
+
+Cancel
+
+Reset
+
+
+
+Add Appointment Form
+
+Fields:
+
+MRD Number
+
+Patient Name
+
+Phone
+
+Email
+
+Department
+
+Specialization
+
+Doctor Name
+
+Appointment Date
+
+Appointment Time
+
+
+Buttons:
+
+Schedule Assistant
+
+Cancel
+
+Submit
+
+
+
+Schedule Assistant Window
+
+Available Time Slots:
+
+Multiple time slot buttons are displayed for the user to select.
+
+
+
+
+---
+
+5. Technical Details
+
+System Requirements
+
+Frontend: HTML, CSS, JavaScript (for rendering pages and interactivity).
+
+Backend: Java or Python (to handle logic and database operations).
+
+Database: MySQL or PostgreSQL (to store appointment and patient data).
+
+
+Key Components
+
+1. Appointment Table: A dynamic table displaying appointment data retrieved from the database.
+
+
+2. Filters: Dropdowns or input fields to filter appointments based on criteria.
+
+
+3. Appointment Form: Form fields for entering appointment data.
+
+
+4. Schedule Assistant: A modal or pop-up displaying available time slots.
+
+
+
+
+---
+
+6. Functional Specifications
+
+
+---
+
+7. Testing Scenarios
+
+Create Appointment
+
+Verify if the form opens correctly.
+
+Test if valid data is stored successfully.
+
+Check for error messages for missing fields.
+
+
+Reschedule Appointment
+
+Test if only existing appointments can be rescheduled.
+
+Verify that the updated data is saved correctly.
+
+
+Schedule Assistant
+
+Check if available slots are displayed dynamically.
+
+Test if the selected slot is updated in the form.
+
+
